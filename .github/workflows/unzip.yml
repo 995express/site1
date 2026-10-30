@@ -1,0 +1,25 @@
+name: Unzip Site Files
+on:
+  push:
+    paths:
+      - 'site.zip'
+
+jobs:
+  unzip-process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Unzip files
+        run: |
+          unzip -o site.zip
+          rm site.zip
+
+      - name: Commit and Push unzipped files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Automated unzip of site files" || exit 0
+          git push
